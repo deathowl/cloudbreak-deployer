@@ -206,6 +206,7 @@ traefik:
         - periscope
         - sultans
         - uluwatu
+        - prometheus
     volumes:
         - /var/run/docker.sock:/var/run/docker.sock
         - ./certs/:/certs/
@@ -338,7 +339,12 @@ cbdb:
     volumes:
         - "$CB_DB_ROOT_PATH/cbdb:/var/lib/postgresql/data"
     image: hortonworks/cloudbreak-server-db:$DOCKER_TAG_CBDB
-
+prometheus:
+    labels:
+      - traefik.enable=false
+    ports:
+      - "$PRIVATE_IP:9090:9090"
+    image: prom/prometheus
 cloudbreak:
     environment:
         - AWS_ACCESS_KEY_ID
